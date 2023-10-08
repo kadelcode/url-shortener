@@ -1,5 +1,9 @@
 from decouple import config
 
+DATABASE_URI = config("DATABASE_URI")
+if DATABASE_URI.startswith("postgres://"):
+    DATABASE_URI = DATABASE_URI.replace("postgres://", "postgres://", 1)
+
 class Config:
     DEBUG = False
     TESTING = False
