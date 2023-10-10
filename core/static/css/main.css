@@ -1,0 +1,116 @@
+/* Default font used by the website */
+.site-font {
+    font-family: 'Montserrat', sans-serif;
+    font-size: large;
+}
+
+/*Logo font styling */
+.logo-font {
+  font-family: 'Beth Ellen', cursive;
+  font-size:xx-large;
+  color: rgb(142, 25, 252);
+  font-weight: 700;
+}
+
+.main-quote {
+  font-family: 'Ubuntu', sans-serif;
+  /*font-size: x-large;
+  font-weight:800;*/
+}
+
+.outer-form-div {
+  margin: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 10px;
+  padding: 4%;
+  margin-bottom: 7%;
+}
+
+.button-link {
+  background-color: white;
+  padding: 15px 25px;
+  border-radius: 7px;
+  text-decoration: none;
+  color: black;
+  font-size: larger;
+  margin: 10%;
+}
+
+.button-link:hover {
+  border: 2px solid black;
+  color: rgb(5, 5, 5);
+}
+
+/*copy icon style */
+.code-field {
+border: 1px solid #141313;
+padding: 10px;
+border-radius: 8px;
+}
+
+.code-field-input {
+  width: 100%;
+  padding-left: 2%;
+  border: 2px solid rgb(145, 35, 248);
+  border-radius: 8px;
+}
+
+.code-field i {
+  font-size: larger;
+  color: rgb(139, 26, 245);
+  font-weight: bold;
+}
+
+.code-field i:hover {
+  color: white;
+  background-color: rgb(139, 26, 245);
+}
+
+.copy-text-icon {
+cursor: pointer;
+}
+
+/*end copy icon style */
+
+/* Jumbotron Style */
+.jumbotron {
+  background-color: rgb(139, 26, 245);
+  margin: 10%;
+  border-radius: 8px;
+}
+
+.jumbotron h2 {
+  font-family: 'Ubuntu Mono', monospace;
+}
+/* End Jumbotron Style */
+
+/*Copy code notication style */
+.copy-code-notification {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  padding: 10px;
+  background-color: green;
+  color: white;
+  font-size: 16px;
+  z-index: 100;
+}
+
+/* Dashboard Styles */
+.edit-profile-button {
+  text-decoration: none;
+  padding: 5px 25px;
+  border: 1px solid black;
+  border-radius: 7px;
+  color: black;
+}
+
+.edit-profile-button:hover {
+  background-color: rgb(139, 26, 245);
+  color: white;
+  transition: 0.2s;
+}
+
+h2, h3, h4 {
+  font-family: 'Ubuntu Mono', monospace;
+}
