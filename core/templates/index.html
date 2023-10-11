@@ -64,9 +64,9 @@ Welcome to Bitsy
             <hr>
             <b><label for="short_url" class="form-label">Shortened URL:</label></b>
             <!--Generated short URL with a copy icon-->
-            <div class="code-field input-group mt-3 mb-3 input-group-sm input-group-lg text-center">
-                <input id="short-link" value="{{short_url}}" type="text" class="code-field-input">
-                <b><i class="uil uil-copy copy-text-icon input-group-text text-center" data-bs-toggle="tooltip" title="copy url"></i></b>
+            <div class="code-field input-group text-center">
+              <input id="short-link" value="{{short_url}}" type="text" class="form-control code-field-input">
+              <span class="input-group-text"><i class="uil uil-copy copy-text-icon text-center" data-bs-toggle="tooltip" title="copy url"></i></span>
             </div>
             {% endif %}
             <!--<span><a href="{{ short_url }}" target="_blank">{{ short_url }}</a></span>-->
