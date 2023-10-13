@@ -27,7 +27,7 @@
     <!-- navigation bar-->
     <nav style="background-color: white;" class="navbar navbar-expand-sm sticky-top">
       <div class="container-fluid">
-        <b><a class="navbar-brand logo-font" href="#">Bitsy</a></b>
+        <b><a class="navbar-brand logo-font" href="{{url_for('index')}}">Bitsy</a></b>
       </div>
 
       <div class="container-fluid">
@@ -40,7 +40,7 @@
             <a class="nav-link text-body" href="#">Log in</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-primary" href="#">Sign up Free</a>
+            <a class="nav-link text-primary" href="{{url_for('register')}}">Sign up Free</a>
           </li>
         </ul>
       </div>
@@ -51,6 +51,14 @@
         {% block content %}{% endblock %}        
                 
     </div>
+
+    <!--Footer section-->
+    <footer class="container-fluid footer">
+      <div class="text-center">
+        <b><a class="navbar-brand logo-font" href="{{url_for('index')}}">Bitsy</a></b>
+        <p>Copyright &copy; 2023 Bitsy</p>
+      </div>
+    </footer>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
