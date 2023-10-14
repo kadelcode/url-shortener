@@ -1,0 +1,91 @@
+{% extends 'dashboard.html' %}
+{% block title %}Username(Full name){% endblock%}
+{% block content %}
+<div>
+    <h2>Hi {{current_user.username}}!</h2>
+    <p>
+        A custom url is a personalized web address that you can create for your website, 
+        blog, or social media profile. It is a unique web address that is specific to you and your brand. 
+        Custom URLs are typically shorter, easier to remember, and more professional than standard URLs.
+    </p>
+
+    <div class="row container">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 outer-form-div container">
+            <h3 class="text-center">Create a Custom URL</h3><br>
+        <!--Form to create a custom URL-->
+            <form method="post" action="{{url_for('user_dashboard')}}" class="mt-3 mb-3">
+                {% for category, message in get_flashed_messages(with_categories=true) %}
+                    {% if category=='error'%}
+                    <div class="alert alert-danger alert-dismissible fade show">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    {{message}}
+                    </div>
+                    {% elif category=='success' %}
+                    <div class="alert alert-success alert-dismissible fade show">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        {{message}}
+                    </div>
+                    {% elif category=='info' %}
+                    <div class="alert alert-info alert-dismissible fade show">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        {{message}}
+                    </div>
+                    {% elif category=='warning' %}
+                    <div class="alert alert-warning alert-dismissible fade show">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        {{message}}
+                    </div>
+                    {% endif %}
+                    
+                {% endfor %}
+                <div class="class="mb-3 mt-3">
+                    <b><label for="url" class="form-label">Paste a long URL:</label></b>
+                    <input type="url" name="url" id="url"
+                        placeholder="Enter long URL" class="form-control"
+                        value="{{ request.form['url'] }}" autofocus>
+
+                    <br>
+
+                    <b><label for="domain" class="form-label">Root domain:</label></b>
+                    <div class="input-group">
+                    <input type="url" name="domain" id="domain"
+                        placeholder="https://bitsy.com" class="form-control"
+                        value="{{ request.form['domain'] }}">
+                    <span class="input-group-text"><i class="uil uil-lock"></i></span>
+                    </div>
+
+                    <br>
+                    
+                    <label for="back-half" class="form-label"><b>Enter a back-half</b>(optional):</label>
+                    <input type="text" name="back_half" id="back-half"
+                        placeholder="Example: products/bags" class="form-control"
+                        value="{{ request.form['back_half'] }}" >
+
+                    <br>
+                </div>
+                
+                <!--Form button-->
+                <div class="form-group text-center mt-3 mb-3">
+                    <button type="submit" class="btn btn-primary btn-md">Create custom URL</button>
+                </div>
+                </form>
+                <!--End Long URL form-->
+
+            {% if short_url %}
+            <hr>
+            <b><label for="short_url" class="form-label">Shortened URL:</label></b>
+            <!--Generated short URL with a copy icon-->
+            <div class="code-field input-group text-center">
+                <input id="short-link" value="{{short_url}}" type="text" class="form-control code-field-input">
+                <b><i class="uil uil-copy copy-text-icon input-group-text text-center" data-bs-toggle="tooltip" title="copy url"></i></b>
+            </div>
+            {% endif %}
+            <!--<span><a href="{{ short_url }}" target="_blank">{{ short_url }}</a></span>-->
+        </div><!--End div for col-md-8 -->
+        <div class="col-md-2"></div>
+    </div><!--End div for row-->
+    
+</div>
+
+{% endblock %}
