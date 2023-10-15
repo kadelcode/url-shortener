@@ -5,8 +5,8 @@ from core import app, db, login_manager
 from random import choice
 import string, hashlib
 import codecs
-from flask import render_template, request, flash, redirect, url_for, current_user
-from flask_login import login_user, login_required, logout_user
+from flask import render_template, request, flash, redirect, url_for
+from flask_login import login_user, login_required, logout_user, current_user
 
 # Choice algorithm
 def generate_short_id(num_of_chars: int):
