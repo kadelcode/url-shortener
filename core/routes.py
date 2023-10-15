@@ -148,7 +148,7 @@ def user_dashboard():
 
         if url and not(domain) and not(back_half):
             # Get the current user id
-            user_id = User.query.first().id
+            user_id = current_user.id
 
             # If the original url exits in db, then return the short url from the database
             if CustomShortUrls.query.filter_by(user_id=user_id, original_url=url).first() is not None:
@@ -166,7 +166,7 @@ def user_dashboard():
 
         if url and domain and not(back_half):
             # Get the current user id
-            user_id = User.query.first().id
+            user_id = current_user.id
 
             # Check if url and domain already exist in database
             if CustomShortUrls.query.filter_by(user_id=user_id, original_url=url).first() is not None and \
@@ -185,7 +185,7 @@ def user_dashboard():
 
         if url and domain and back_half:
             # Get the current user id
-            user_id = User.query.first().id
+            user_id = current_user.id
 
             # Check if url, domain, and back_half already in database
             if CustomShortUrls.query.filter_by(user_id=user_id, original_url=url).first() is not None and \
@@ -204,7 +204,7 @@ def user_dashboard():
 
         if url and back_half and not(domain):
             # Get the current user id
-            user_id = User.query.first().id
+            user_id = current_user.id
             
             # Check if url and back_half exist in database
             if CustomShortUrls.query.filter_by(user_id=user_id, original_url=url).first() is not None and \
