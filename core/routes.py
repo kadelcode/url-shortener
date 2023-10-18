@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 from core.models import ShortUrls, CustomShortUrls, User
 from core.forms import LoginForm, RegistrationForm
@@ -34,6 +35,8 @@ def generate_short_url(custom_url):
 # Index(homepage) route
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    #if current_user is not None and current_user.is_authenticated:
+    #    return redirect(url_for('user_dashboard'))
     if request.method == 'POST':
         url = request.form['url']
             
@@ -75,6 +78,20 @@ def redirect_url(short_id):
         flash('Invalid URL', 'error')
         return redirect(url_for('index'))
 
+# visit link
+@app.route('/visit/<short_id>')
+@login_required
+def visit_link(short_id):
+    user_id = current_user.id # current logged in user id
+    link = CustomShortUrls.query.filter_by(user_id=user_id, short_id=short_id).first()
+    if link:
+        return redirect(link.original_url)
+
+    else:
+        flash('Invalid Link!', 'error')
+        return redirect(url_for('index'))
+
+
 # Route for registering a user to the platform
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -102,13 +119,16 @@ def register():
             db.session.add(user)
             db.session.commit()
 
-            flash('Registration successful!', 'success')
-
-            return redirect(url_for('user_dashboard'))
+            flash('Registration successful! You can now login.', 'success')
+            if current_user.is_authenticated:
+                return redirect(url_for('user_dashboard', user=current_user.username))
+            else:
+                # Redirect the user to the login page.
+                return redirect(url_for('login'))
 
     return render_template('register.html', form=form)
 
-
+# Login function
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -117,7 +137,7 @@ def login():
         if user is not None and user.verify_password(form.password.data):
             login_user(user, form.remember_me.data)
             flash('login successful', 'success')
-            return redirect(url_for('user_dashboard'))
+            return redirect(url_for('user_dashboard', user=current_user.username))
         flash('Invalid username or password!', 'error')
     return render_template('login.html', form=form)
 
@@ -130,9 +150,11 @@ def logout():
     return redirect(url_for('index'))
 
 # Dashboard route
-@app.route('/dashboard', methods=['GET','POST'])
+@app.route('/<user>/dashboard', methods=['GET','POST'])
 @login_required
-def user_dashboard():
+def user_dashboard(user):
+    # user username
+    user = current_user.username
     # A post request method to generate a custom URL for a logged in user
     if request.method == 'POST':
         url = request.form.get('url') # Required input
@@ -144,7 +166,7 @@ def user_dashboard():
         # If the user doesn't enter a long URL, then this happens
         if not url:
             flash('The URL is required!', 'error')
-            return redirect(url_for('user_dashboard'))
+            return redirect(url_for('user_dashboard', user=current_user.username))
 
         if url and not(domain) and not(back_half):
             # Get the current user id
@@ -154,15 +176,16 @@ def user_dashboard():
             if CustomShortUrls.query.filter_by(user_id=user_id, original_url=url).first() is not None:
                 flash('Custom url already created', 'info')
                 short_url = CustomShortUrls.query.filter_by(user_id=user_id,original_url=url).first().short_url
+
                 # short_url = request.host_url + short_id
-                return redirect(url_for('user_dashboard', short_url=short_url))
+                return redirect(url_for('user_dashboard', user=current_user.username, short_url=short_url))
             else: # if original url does exist
                 short_url = request.host_url + short_id
                 custom_link = CustomShortUrls(user_id=user_id, original_url=url, short_id=short_id, short_url=short_url)
                 db.session.add(custom_link)
                 db.session.commit()
                 flash('Custom URL successfully generated', 'success')
-                return redirect(url_for('user_dashboard', short_url = short_url))
+                return redirect(url_for('user_dashboard', user=current_user.username, short_url = short_url))
 
         if url and domain and not(back_half):
             # Get the current user id
@@ -173,7 +196,7 @@ def user_dashboard():
                 (CustomShortUrls.query.filter_by(user_id=user_id, domain=domain).first() is not None):
                 short_url = CustomShortUrls.query.filter_by(user_id=user_id, original_url=url, domain=domain).first().short_url
                 flash('Custom url already created', 'info')
-                return redirect(url_for('user_dashboard', short_url = short_url))
+                return redirect(url_for('user_dashboard', user=current_user.username, short_url = short_url))
 
             else:
                 short_url = domain + "/" + short_id
@@ -181,7 +204,7 @@ def user_dashboard():
                 db.session.add(custom_link)
                 db.session.commit()
                 flash('Custom URL successfully generated', 'success')
-                return redirect(url_for('user_dashboard', short_url = short_url))
+                return redirect(url_for('user_dashboard', user=current_user.username, short_url = short_url))
 
         if url and domain and back_half:
             # Get the current user id
@@ -192,7 +215,7 @@ def user_dashboard():
                 (CustomShortUrls.query.filter_by(user_id=user_id, domain=domain).first() is not None) and \
                     (CustomShortUrls.query.filter_by(user_id=user_id, back_half=back_half).first() is not None):
                 flash('Custom url already created.', 'info')
-                return redirect(url_for('user_dashboard', short_url = short_url))
+                return redirect(url_for('user_dashboard', user=current_user.username, short_url = short_url))
             
             else:
                 short_url = domain + "/" + short_id + "/" + back_half
@@ -200,7 +223,7 @@ def user_dashboard():
                 db.session.add(custom_link)
                 db.session.commit()
                 flash('Custom URL successfully generated', 'success')
-                return redirect(url_for('user_dashboard', short_url = short_url))
+                return redirect(url_for('user_dashboard', user=current_user.username, short_url = short_url))
 
         if url and back_half and not(domain):
             # Get the current user id
@@ -211,7 +234,7 @@ def user_dashboard():
                 (CustomShortUrls.query.filter_by(user_id=user_id, back_half=back_half).first() is not None):
                 short_url = CustomShortUrls.query.filter_by(user_id=user_id, original_url=url, back_half=back_half).first().short_url
                 flash('Custom url already created.')
-                return redirect(url_for('user_dashboard', short_url = short_url))
+                return redirect(url_for('user_dashboard', user=current_user.username, short_url = short_url))
             
             else:
                 short_url = request.host_url + short_id + "/" + back_half
@@ -219,7 +242,8 @@ def user_dashboard():
                 db.session.add(custom_link)
                 db.session.commit()
                 flash('Custom URL successfully generated', 'success')
-                return redirect(url_for('user_dashboard', short_url = short_url))
+                return render_template('overview.html', user=current_user.username, short_url = short_url)
+                #return redirect(url_for('user_dashboard', user=current_user.username, short_url = short_url))
         '''
         # If the original link doesn't exist, then add to the database
         if CustomShortUrls.query.filter_by(original_url=url).first() is None:
@@ -257,7 +281,8 @@ def redirect_custom_url_ds(short_id, back_half):
 # Redirect the custom short url with short_id && back_half
 @app.route('/<short_id>/<back_half>')
 def redirect_custom_url_sb(short_id, back_half):
-    link = CustomShortUrls.query.filter_by(short_id=short_id, back_half=back_half).first()
+    user_id = current_user.id
+    link = CustomShortUrls.query.filter_by(user_id=user_id, short_id=short_id, back_half=back_half).first()
     if link:
         return redirect(link.original_url)
     else:
@@ -275,13 +300,40 @@ def redirect_custom_url_dsb(domain, short_id, back_half):
         return redirect(url_for('index'))
 
 # Route for the user generated custom URLs
-@app.route('/user-custom-url')
+@app.route('/my_custom-urls')
 @login_required
 def user_custom_url():
-    return render_template('user_custom_url.html')
+    username = current_user.username
+    user_id = current_user.id
+    # Get the custom urls of the particular user in reverse chronological order.
+    custom_urls = CustomShortUrls.query.filter_by(user_id=user_id).order_by(CustomShortUrls.created_at.desc()).all()
+    # custom_urls = User.query.get(user_id).customshorturls
+    return render_template('user_custom_url.html', custom_urls=custom_urls)
+
+# Function to delete a custom url for an authenticated user
+@app.route('/delete/<short_id>')
+@login_required
+def delete(short_id):
+    custom_url = CustomShortUrls.query.filter_by(short_id=short_id).first()
+
+    if custom_url:
+        db.session.delete(custom_url)
+        db.session.commit()
+        flash('successfully deleted custom url', 'success')
+
+    else:
+        flash("Couldn't delete the custom url you requested for.", 'error')
+
+    return redirect(url_for('user_custom_url'))
 
 # Route for the help section
 @app.route('/help')
 @login_required
 def help():
     return render_template('help.html')
+
+# Route for the pro version that requires payment
+@app.route('/pro_version')
+@login_required
+def pro_version():
+    return render_template('pro_version.html')
