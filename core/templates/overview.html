@@ -1,5 +1,5 @@
 {% extends 'dashboard.html' %}
-{% block title %}Username(Full name){% endblock%}
+{% block title %}{{current_user.username}}'s dashboard{% endblock%}
 {% block content %}
 <div>
     <h2>Hi {{current_user.username}}!</h2>
@@ -14,7 +14,7 @@
         <div class="col-md-8 outer-form-div container">
             <h3 class="text-center">Create a Custom URL</h3><br>
         <!--Form to create a custom URL-->
-            <form method="post" action="{{url_for('user_dashboard')}}" class="mt-3 mb-3">
+            <form method="post" action="{{url_for('user_dashboard', user=current_user.username)}}" class="custom-form mb-3">
                 {% for category, message in get_flashed_messages(with_categories=true) %}
                     {% if category=='error'%}
                     <div class="alert alert-danger alert-dismissible fade show">
@@ -51,8 +51,9 @@
                     <div class="input-group">
                     <input type="url" name="domain" id="domain"
                         placeholder="https://bitsy.com" class="form-control"
-                        value="{{ request.form['domain'] }}">
-                    <span class="input-group-text"><i class="uil uil-lock"></i></span>
+                        value="{{ request.form['domain'] }}"  data-bs-toggle="tooltip" 
+                        title="Unavailable for free account" disabled>
+                    <!--<span class="input-group-text"><i class="uil uil-lock"></i></span>-->
                     </div>
 
                     <br>
@@ -77,11 +78,10 @@
             <b><label for="short_url" class="form-label">Shortened URL:</label></b>
             <!--Generated short URL with a copy icon-->
             <div class="code-field input-group text-center">
-                <input id="short-link" value="{{short_url}}" type="text" class="form-control code-field-input">
+                <input id="short-link" value="{{short_url}}" type="text" class="form-control code-field-input" disabled>
                 <b><i class="uil uil-copy copy-text-icon input-group-text text-center" data-bs-toggle="tooltip" title="copy url"></i></b>
             </div>
             {% endif %}
-            <!--<span><a href="{{ short_url }}" target="_blank">{{ short_url }}</a></span>-->
         </div><!--End div for col-md-8 -->
         <div class="col-md-2"></div>
     </div><!--End div for row-->
