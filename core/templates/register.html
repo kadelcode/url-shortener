@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title%} Register {% endblock %}
+{% block content %}
+<div class="row container">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 outer-form-div">
+        <h3 class="text-center" style="color: rgb(139, 26, 245);">Sign Up</h3>
+        <!--Form to create a custom URL-->
+        <form method="post" action="{{url_for('register')}}" class="custom-form mt-3 mb-3">
+            {{ form.csrf_token() }}
+            {% for category, message in get_flashed_messages(with_categories=true) %}
+                {% if category=='error'%}
+                <div class="alert alert-danger alert-dismissible fade show">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                {{message}}
+                </div>
+                {% else %}
+                <div class="alert alert-{{category}} alert-dismissible fade show">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    {{message}}
+                </div>
+                {% endif %}
+                
+            {% endfor %}
+            <div class="mb-3 mt-3">
+                {{ form.hidden_tag() }}
+                {{ wtf.form_errors(form, hiddens="only") }}
+                {{wtf.quick_form(form)}}
+            </div>
+
+            </form>
+            <p class="text-center"> Already have an account? <a href="{{url_for('login')}}">Sign in</a></p>
+    </div>
+    <div class="col-md-3"></div>
+</div>
+{% endblock %}
