@@ -1,0 +1,57 @@
+{% extends 'dashboard.html'%}
+{% block title %}{{current_user.username}}'s custom URLs{% endblock %}
+{% block content%}
+<div id="section-to-reload-custom-url">
+  {% for category, message in get_flashed_messages(with_categories=true) %}
+    {% if category=='error'%}
+    <div class="alert alert-danger alert-dismissible fade show">
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      {{message}}
+    </div>
+    {% else %}
+    <div class="alert alert-{{category}} alert-dismissible fade show">
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      {{message}}
+    </div>
+    {% endif %}
+                
+  {% endfor %}
+  <h2>My Custom URL(s)</h2>
+        <div class="card">
+          <div class="card-header">
+            Generated custom URLs
+          </div>
+          {% if custom_urls %}
+          <div class="card-body">
+            <table style="overflow: scroll;" class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Custom URL</th>
+                  <th scope="col">Date created</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              {% for custom_url in custom_urls%}
+              <tr>
+                <td>
+                  <!--Generated short URL with a copy icon-->
+                  <div class="code-field input-group text-center">
+                    <input value="{{custom_url.short_url}}" type="text" class="form-control code-field-input short-link" disabled>
+                    <b><i class="uil uil-copy copy-text-icon input-group-text text-center" data-bs-toggle="tooltip" title="copy url"></i></b>
+                  </div>
+                </td>
+                <td>{{custom_url.created_at.strftime("%Y-%m-%d")}}</td>
+                <td>
+                  <a href="#" class="btn btn-primary btn-md">View</a>
+                  <a href="{{url_for('delete', short_id=custom_url.short_id)}}" class="btn btn-danger btn-md">Delete</a>
+                  <a href="{{url_for('visit_link', short_id=custom_url.short_id)}}" class="btn btn-info btn-md">Visit Site</a>
+                </td>
+              </tr>
+              {% endfor %}
+            </table>
+          </div>
+          {% else %}
+          <p class="text-center">No available custom url. You can create one <a href="{{url_for('user_dashboard', user=current_user.username)}}">here</a></p>
+          {% endif %}
+</div>
+{% endblock %}
