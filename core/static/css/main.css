@@ -165,14 +165,14 @@ transition: 0.2s;
 .notification {
 font-family: 'Montserrat', sans-serif;
 font-size: 14px;
-padding: 7px 20px;
+padding: 12px 22px;
 color: white;
 background-color: #0c0c0c;
 border-radius: 6px;
 transition: 0.7s;
 position: fixed;
 bottom: 6px;
-left: 7px;
+left: 5px;
 }
 
 .footer {
