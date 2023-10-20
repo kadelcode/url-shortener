@@ -173,7 +173,7 @@ def user_dashboard(user):
             user_id = current_user.id
 
             # If the original url exits in db, then return the short url from the database
-            if CustomShortUrls.query.filter_by(user_id=user_id, original_url=url).first() is not None:
+            if CustomShortUrls.query.filter_by(user_id=user_id, original_url=url, domain=None, back_half=None).first() is not None:
                 flash('Custom url already created', 'info')
                 short_url = CustomShortUrls.query.filter_by(user_id=user_id,original_url=url).first().short_url
 
@@ -181,9 +181,10 @@ def user_dashboard(user):
                 return redirect(url_for('user_dashboard', user=current_user.username, short_url=short_url))
             else: # if original url does exist
                 short_url = request.host_url + short_id
-                custom_link = CustomShortUrls(user_id=user_id, original_url=url, short_id=short_id, short_url=short_url)
+                date_time = datetime.now()
+                custom_link = CustomShortUrls(user_id=user_id, original_url=url, short_id=short_id, short_url=short_url,created_at=date_time)
                 db.session.add(custom_link)
-                db.session.commit()
+                db.session.commit() 
                 flash('Custom URL successfully generated', 'success')
                 return redirect(url_for('user_dashboard', user=current_user.username, short_url = short_url))
 
@@ -200,7 +201,8 @@ def user_dashboard(user):
 
             else:
                 short_url = domain + "/" + short_id
-                custom_link = CustomShortUrls(user_id=user_id, original_url=url, domain=domain, short_id=short_id, short_url = short_url)
+                date_time = datetime.now()
+                custom_link = CustomShortUrls(user_id=user_id, original_url=url, domain=domain, short_id=short_id, short_url = short_url, created_at=date_time)
                 db.session.add(custom_link)
                 db.session.commit()
                 flash('Custom URL successfully generated', 'success')
@@ -219,7 +221,8 @@ def user_dashboard(user):
             
             else:
                 short_url = domain + "/" + short_id + "/" + back_half
-                custom_link = CustomShortUrls(user_id=user_id, original_url=url, domain=domain, back_half=back_half, short_id=short_id, short_url = short_url)
+                date_time = datetime.now()
+                custom_link = CustomShortUrls(user_id=user_id, original_url=url, domain=domain, back_half=back_half, short_id=short_id, short_url = short_url, created_at=date_time)
                 db.session.add(custom_link)
                 db.session.commit()
                 flash('Custom URL successfully generated', 'success')
@@ -233,12 +236,13 @@ def user_dashboard(user):
             if CustomShortUrls.query.filter_by(user_id=user_id, original_url=url).first() is not None and \
                 (CustomShortUrls.query.filter_by(user_id=user_id, back_half=back_half).first() is not None):
                 short_url = CustomShortUrls.query.filter_by(user_id=user_id, original_url=url, back_half=back_half).first().short_url
-                flash('Custom url already created.')
+                flash('Custom url already created.', 'success')
                 return redirect(url_for('user_dashboard', user=current_user.username, short_url = short_url))
             
             else:
                 short_url = request.host_url + short_id + "/" + back_half
-                custom_link = CustomShortUrls(user_id=user_id, original_url=url, back_half=back_half, short_id=short_id, short_url = short_url)
+                date_time = datetime.now()
+                custom_link = CustomShortUrls(user_id=user_id, original_url=url, back_half=back_half, short_id=short_id, short_url = short_url, created_at=date_time)
                 db.session.add(custom_link)
                 db.session.commit()
                 flash('Custom URL successfully generated', 'success')
