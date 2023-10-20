@@ -154,13 +154,25 @@ transition: 0.1s;
 justify-self: center;
 }
 
-.flask-error {
+.custom-form p{
 color: #dc3545;
-font-size: 12px;
 }
 
 .message-div {
 transition: 0.2s;
+}
+
+.notification {
+font-family: 'Montserrat', sans-serif;
+font-size: 14px;
+padding: 7px 20px;
+color: white;
+background-color: #0c0c0c;
+border-radius: 6px;
+transition: 0.7s;
+position: fixed;
+bottom: 6px;
+left: 7px;
 }
 
 .footer {
@@ -168,4 +180,11 @@ background-color: rgb(22, 12, 31);
 color: white;
 margin-top: 30px;
 padding: 20px;
+}
+
+/*Media Queries Styles*/
+@media (max-width: 600px) {
+.table {
+  overflow-x: scroll;
+}
 }
