@@ -13,8 +13,14 @@ copyTextIcon.addEventListener('click', () => {
 
   navigator.clipboard.writeText(textToCopy)
     .then(() => {
-      // Text copied successfully!
-      alert("Link copied to clipboard")
+      const notification = document.createElement("div");
+      notification.classList.add("notification")
+      notification.textContent="Link copied to clipboard!";
+      document.body.appendChild(notification);
+
+      setTimeout (function() {
+        document.body.removeChild(notification);
+      }, 3000)
     })
     .catch((error) => {
       // Something went wrong while copying the text.
