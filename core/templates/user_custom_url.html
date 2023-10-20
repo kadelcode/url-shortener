@@ -36,17 +36,37 @@
                 <td>
                   <!--Generated short URL with a copy icon-->
                   <div class="code-field input-group text-center">
-                    <input value="{{custom_url.short_url}}" type="text" class="form-control code-field-input short-link" disabled>
-                    <b><i class="uil uil-copy copy-text-icon input-group-text text-center" data-bs-toggle="tooltip" title="copy url"></i></b>
+                    <input value="{{custom_url.short_url}}" type="text" class="form-control code-field-input" disabled>
+                    <b><i class="uil uil-copy copy-icon input-group-text text-center" data-bs-toggle="tooltip" title="copy url" data-text = "{{custom_url.short_url}}"></i></b>
                   </div>
                 </td>
-                <td>{{custom_url.created_at.strftime("%Y-%m-%d")}}</td>
+                <td>{{custom_url.created_at.strftime("%Y-%m-%d %H:%M:%S")}}</td>
                 <td>
-                  <a href="#" class="btn btn-primary btn-md">View</a>
+                  <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#{custom_url.short_id}">View</button>
                   <a href="{{url_for('delete', short_id=custom_url.short_id)}}" class="btn btn-danger btn-md">Delete</a>
                   <a href="{{url_for('visit_link', short_id=custom_url.short_id)}}" class="btn btn-info btn-md">Visit Site</a>
                 </td>
               </tr>
+              <!-- Modal -->
+              <div id="{{custom_url.short_id}}" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                  <!-- Modal content-->
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4 class="modal-title">Modal Header</h4>
+                    </div>
+                    <div class="modal-body">
+                      <p>Some text in the modal.</p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
               {% endfor %}
             </table>
           </div>
@@ -54,4 +74,26 @@
           <p class="text-center">No available custom url. You can create one <a href="{{url_for('user_dashboard', user=current_user.username)}}">here</a></p>
           {% endif %}
 </div>
+<!-- Trigger the modal with a button
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>-->
+<script type="Text/JavaScript">
+  const copyIcons = document.querySelectorAll(".copy-icon") // get all the classes with copy-icon 
+
+  for (const copyIcon of copyIcons) { // for each copyIcon in the copyIcons class
+    copyIcon.addEventListener("click", function(event) {
+      const textToCopy = event.target.dataset.text;
+
+      navigator.clipboard.writeText(textToCopy); // write the text to the clipboaard
+
+      const notification = document.createElement("div");
+      notification.classList.add("notification");
+      notification.textContent= "Link copied to clipboard!";
+      document.body.appendChild(notification); // add the notication to the document body
+
+      setTimeout(function() {
+        document.body.removeChild(notification); // remove the notication from the document body
+      }, 3000);
+    });
+  }
+</script>
 {% endblock %}
