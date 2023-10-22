@@ -6,8 +6,9 @@ from core import app, db, login_manager
 from random import choice
 import string, hashlib
 import codecs
-from flask import render_template, request, flash, redirect, url_for
+from flask import render_template, request, flash, redirect, url_for, g
 from flask_login import login_user, login_required, logout_user, current_user
+from bleach import clean
 
 # Choice algorithm
 def generate_short_id(num_of_chars: int):
@@ -174,19 +175,21 @@ def user_dashboard(user):
 
             # If the original url exits in db, then return the short url from the database
             if CustomShortUrls.query.filter_by(user_id=user_id, original_url=url, domain=None, back_half=None).first() is not None:
-                flash('Custom url already created', 'info')
+                flash("Custom URL already generated. You can copy the link below.", 'info')
                 short_url = CustomShortUrls.query.filter_by(user_id=user_id,original_url=url).first().short_url
 
                 # short_url = request.host_url + short_id
-                return redirect(url_for('user_dashboard', user=current_user.username, short_url=short_url))
+                return render_template("overview.html", user=current_user.username, short_url=short_url)
+                # return redirect(url_for('user_dashboard', user=current_user.username, short_url = short_url))
             else: # if original url does exist
                 short_url = request.host_url + short_id
                 date_time = datetime.now()
                 custom_link = CustomShortUrls(user_id=user_id, original_url=url, short_id=short_id, short_url=short_url,created_at=date_time)
                 db.session.add(custom_link)
-                db.session.commit() 
-                flash('Custom URL successfully generated', 'success')
-                return redirect(url_for('user_dashboard', user=current_user.username, short_url = short_url))
+                db.session.commit()
+                flash(clean("Custom URL successfully generated. You can copy the link below."), 'success')
+                return render_template("overview.html", user=current_user.username, short_url=short_url)
+                # return redirect(url_for('user_dashboard', user=current_user.username, short_url = short_url))
 
         if url and domain and not(back_half):
             # Get the current user id
@@ -196,8 +199,9 @@ def user_dashboard(user):
             if CustomShortUrls.query.filter_by(user_id=user_id, original_url=url).first() is not None and \
                 (CustomShortUrls.query.filter_by(user_id=user_id, domain=domain).first() is not None):
                 short_url = CustomShortUrls.query.filter_by(user_id=user_id, original_url=url, domain=domain).first().short_url
-                flash('Custom url already created', 'info')
-                return redirect(url_for('user_dashboard', user=current_user.username, short_url = short_url))
+                flash('Custom url already created. You can copy the link below', 'info')
+                return render_template("overview.html", user=current_user.username, short_url=short_url)
+                # return redirect(url_for('user_dashboard', user=current_user.username, short_url = short_url))
 
             else:
                 short_url = domain + "/" + short_id
@@ -205,8 +209,9 @@ def user_dashboard(user):
                 custom_link = CustomShortUrls(user_id=user_id, original_url=url, domain=domain, short_id=short_id, short_url = short_url, created_at=date_time)
                 db.session.add(custom_link)
                 db.session.commit()
-                flash('Custom URL successfully generated', 'success')
-                return redirect(url_for('user_dashboard', user=current_user.username, short_url = short_url))
+                flash('Custom URL successfully generated. You can copy the link below.', 'success')
+                return render_template("overview.html", user=current_user.username, short_url=short_url)
+                # return redirect(url_for('user_dashboard', user=current_user.username, short_url = short_url))
 
         if url and domain and back_half:
             # Get the current user id
@@ -216,8 +221,9 @@ def user_dashboard(user):
             if CustomShortUrls.query.filter_by(user_id=user_id, original_url=url).first() is not None and \
                 (CustomShortUrls.query.filter_by(user_id=user_id, domain=domain).first() is not None) and \
                     (CustomShortUrls.query.filter_by(user_id=user_id, back_half=back_half).first() is not None):
-                flash('Custom url already created.', 'info')
-                return redirect(url_for('user_dashboard', user=current_user.username, short_url = short_url))
+                flash('Custom url already created. You can copy the link below.', 'info')
+                return render_template("overview.html", user=current_user.username, short_url=short_url)
+                # return redirect(url_for('user_dashboard', user=current_user.username, short_url = short_url))
             
             else:
                 short_url = domain + "/" + short_id + "/" + back_half
@@ -225,8 +231,9 @@ def user_dashboard(user):
                 custom_link = CustomShortUrls(user_id=user_id, original_url=url, domain=domain, back_half=back_half, short_id=short_id, short_url = short_url, created_at=date_time)
                 db.session.add(custom_link)
                 db.session.commit()
-                flash('Custom URL successfully generated', 'success')
-                return redirect(url_for('user_dashboard', user=current_user.username, short_url = short_url))
+                flash('Custom URL successfully generated. You can copy the link below.', 'success')
+                return render_template("overview.html", user=current_user.username, short_url=short_url)
+                # return redirect(url_for('user_dashboard', user=current_user.username, short_url = short_url))
 
         if url and back_half and not(domain):
             # Get the current user id
@@ -236,8 +243,9 @@ def user_dashboard(user):
             if CustomShortUrls.query.filter_by(user_id=user_id, original_url=url).first() is not None and \
                 (CustomShortUrls.query.filter_by(user_id=user_id, back_half=back_half).first() is not None):
                 short_url = CustomShortUrls.query.filter_by(user_id=user_id, original_url=url, back_half=back_half).first().short_url
-                flash('Custom url already created.', 'success')
-                return redirect(url_for('user_dashboard', user=current_user.username, short_url = short_url))
+                flash('Custom url already created. You can copy the link below.', 'info')
+                return render_template("overview.html", user=current_user.username, short_url=short_url)
+                # return redirect(url_for('user_dashboard', user=current_user.username, short_url = short_url))
             
             else:
                 short_url = request.host_url + short_id + "/" + back_half
@@ -245,8 +253,9 @@ def user_dashboard(user):
                 custom_link = CustomShortUrls(user_id=user_id, original_url=url, back_half=back_half, short_id=short_id, short_url = short_url, created_at=date_time)
                 db.session.add(custom_link)
                 db.session.commit()
-                flash('Custom URL successfully generated', 'success')
-                return render_template('overview.html', user=current_user.username, short_url = short_url)
+                flash('Custom URL successfully generated. You can copy the link below.', 'success')
+                return render_template("overview.html", user=current_user.username, short_url=short_url)
+                # return render_template('overview.html', user=current_user.username, short_url = short_url)
                 #return redirect(url_for('user_dashboard', user=current_user.username, short_url = short_url))
         '''
         # If the original link doesn't exist, then add to the database
