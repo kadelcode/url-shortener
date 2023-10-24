@@ -175,6 +175,48 @@ bottom: 6px;
 left: 5px;
 }
 
+/* Modal Styles */
+.modal {
+display: none;
+overflow: auto;
+background-color: 0, 0, 0, 0.4;
+-webkit-animation: animatetop;
+-webkit-animation-duration: 0.4s;
+animation: animatetop 0.4s timing-function delay iteration-count direction fill-mode;
+animation-name: animatetop;
+animation-duration: 0.4s;
+}
+
+@keyframes animatetop {
+from {top: -300px; opacity: 0;};
+to {top:0; opacity:1};
+}
+
+/* Add Animation Function
+@-webkit-keyframes animatetop {
+from {top: -300px; opacity: 0}
+to {top: 0; opacity: 1;}
+}*/
+
+.modal-header {
+background-color: #9a44fd;
+color: white;
+padding: 5px;
+}
+
+.modal-header span {
+transition: 0.5s;
+font-size: 24px;
+}
+
+.modal-header span:hover {
+font-weight: bold;
+color: black;
+transition: 0.2s;
+cursor: pointer;
+font-size: 24px;
+}
+
 .footer {
 background-color: rgb(22, 12, 31);
 color: white;
