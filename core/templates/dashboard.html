@@ -24,7 +24,7 @@
 </head>
 <body class="site-font">
   <!--Navigation-->
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
     <div class="container">
       <a style="color: rgb(142, 25, 252);" class="navbar-brand logo-font" href="{{url_for('index')}}">Bitsy</a>
       <!--Button for the toggler icon-->
@@ -35,7 +35,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{{url_for('user_dashboard', user=current_user.username)}}">Overview</a>
+            <a class="nav-link" aria-current="page" href="{{url_for('user_dashboard', user=current_user.username)}}">Overview</a>
           </li>
           <li class="nav-item">
             <a id="reload-custom-url" class="nav-link" href="{{url_for('user_custom_url')}}">My custom URLs</a>
@@ -70,7 +70,7 @@
   <!--Left aligned link-->
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-3">
+      <div class="col-md-3 left-aligned-div">
         <div class="text-center">
           <img src="{{ url_for('static', filename= '/img/logo1.png') }}" alt="Avatar Logo" style="width:90%;" class="rounded-pill">
           <h3>{{current_user.username}}</h3><br>
