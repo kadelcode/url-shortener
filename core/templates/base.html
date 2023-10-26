@@ -34,7 +34,7 @@
         <ul class="navbar-nav">
           {% if current_user.is_authenticated %}
           <li class="nav-item">
-            <a class="nav-link text-body" href="#">Why Bitsy?</a>
+            <a class="nav-link text-body" href="{{url_for('why_bitsy')}}">Why Bitsy?</a>
           </li>
           <li class="nav-item">
             <a class="nav-link text-body" href="{{url_for('user_dashboard', user=current_user.username)}}">My Dashboard</a>
@@ -44,7 +44,7 @@
           </li>
           {% else %}
           <li class="nav-item">
-            <a class="nav-link text-body" href="#">Why Bitsy?</a>
+            <a class="nav-link text-body" href="{{url_for('why_bitsy')}}">Why Bitsy?</a>
           </li>
           <li class="nav-item">
             <a class="nav-link text-body" href="{{url_for('login')}}">Log in</a>
