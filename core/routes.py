@@ -1,7 +1,7 @@
 import json
 from datetime import datetime
 from core.models import ShortUrls, CustomShortUrls, User
-from core.forms import LoginForm, RegistrationForm
+from core.forms import LoginForm, RegistrationForm, EditProfileForm
 from core import app, db, login_manager
 from random import choice
 import string, hashlib
@@ -350,3 +350,45 @@ def help():
 @login_required
 def pro_version():
     return render_template('pro_version.html')
+
+# why platform page
+@app.route('/why-bitsy')
+def why_bitsy():
+    return render_template('why_bitsy.html')
+
+# View user profile
+@app.route('/<user>/view-profile')
+@login_required
+def view_profile(user):
+    user = current_user.username
+    return render_template('view_profile.html', user=user)
+
+# Edit profile route
+@app.route('/edit-profile', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    form = EditProfileForm()
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            email = form.email.data
+            username = form.username.data
+            first_name = form.first_name.data
+            last_name = form.last_name.data
+            
+            # Get the id of the current user
+            user = User.query.get(current_user.id)
+
+            user.email = email # Update the email of the user
+            user.username = username # Update the username of the user
+            user.first_name = first_name # Update the first name of the user
+            user.last_name = last_name # Update the last name of the user
+
+            db.session.commit() # commit the updated user info to the database
+            flash('Your profile has been updated.', 'success')
+            return redirect(url_for('view_profile', user=current_user.username))
+    form.email.data = current_user.email
+    form.username.data = current_user.username
+    form.first_name.data = current_user.first_name
+    form.last_name.data = current_user.last_name
+
+    return render_template('edit_profile.html', form=form)
