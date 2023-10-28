@@ -121,11 +121,14 @@ def register():
             db.session.commit()
 
             flash('Registration successful! You can now login.', 'success')
+            """
             if current_user.is_authenticated:
                 return redirect(url_for('user_dashboard', user=current_user.username))
             else:
                 # Redirect the user to the login page.
                 return redirect(url_for('login'))
+            """
+            return redirect(url_for('login'))
 
     return render_template('register.html', form=form)
 
