@@ -2,16 +2,20 @@
 {% block title %}{{current_user.username}}'s dashboard{% endblock%}
 {% block content %}
 <div>
+    <div class="avatar-div">
+        <img src="{{ url_for('static', filename= '/img/logo.png') }}" alt="Avatar Logo" style="width:25%;" class="rounded-pill">
+        <a class="mt-3 edit-profile-button btn-sm" href="{{url_for('edit_profile')}}">Edit Profile</a>
+    </div>
     <h2>Hi {{current_user.username}}!</h2>
-    <p>
+    <p style="text-align: justify;">
         A custom url is a personalized web address that you can create for your website, 
         blog, or social media profile. It is a unique web address that is specific to you and your brand. 
         Custom URLs are typically shorter, easier to remember, and more professional than standard URLs.
     </p>
 
-    <div class="row container">
+    <div class="row container-fluid">
         <div class="col-md-2"></div>
-        <div class="col-md-8 outer-form-div container">
+        <div class="col-md-8 outer-form-div">
             <h3 class="text-center">Create a Custom URL</h3><br>
         <!--Form to create a custom URL-->
             <form method="post" action="{{url_for('user_dashboard', user=current_user.username)}}" class="custom-form mb-3">
