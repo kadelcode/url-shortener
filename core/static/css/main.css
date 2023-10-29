@@ -256,6 +256,33 @@ padding: 20px;
 display: none;
 }
 
+/* File Style */
+input[type="file"] {
+background-color: #dc3545;
+}
+
+/* Social media icons */
+.social-icons {
+padding: 5px;
+}
+
+.social-icons a {
+text-decoration: none;
+color: white;
+transition: 0.3s;
+}
+
+.social-icons a:hover {
+color: rgb(139, 26, 245);
+}
+
+.social-icons i{
+cursor: pointer;
+padding: 5px;
+font-size: 22px;
+border-radius: 8px;
+}
+
 /*Media Queries Styles*/
 @media (max-width: 768px) {
 .table {
