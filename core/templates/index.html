@@ -9,9 +9,9 @@ Welcome to Bitsy
     </div>
     
     <!--Main div to create a short URL-->
-    <div class="row container">
+    <div class="row container-fluid">
         <div class="col-md-2"></div>
-        <div class="col-md-8 outer-form-div container">
+        <div class="col-md-8 outer-form-div">
             <!--Long URL form-->
             <form method="post" action="{{url_for('index')}}" class="custom-form mb-3">
             {% for category, message in get_flashed_messages(with_categories=true) %}
@@ -42,7 +42,7 @@ Welcome to Bitsy
                 <b><label for="url" class="form-label">Paste a long URL:</label></b>
                 <input type="url" name="url" id="url"
                     placeholder="Enter long URL" class="form-control"
-                    value="{{ request.form['url'] }}" autofocus></input>
+                    value="{{ request.form['url'] }}"></input>
             </div>
             
             <!--Form button-->
