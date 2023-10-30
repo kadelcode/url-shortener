@@ -2,6 +2,10 @@
 ## A URL(Uniform Resource Locator) Shortener Web Application
 - A flask (Python web framework) web application that allows users (both anonymous and authenticated) to shorten long URLs.
 
+## Screenshots
+![Homepage](https://github.com/kadelcode/url-shortener/blob/main/site_images/homepage.png){The homepage}
+![Dashboard](https://github.com/kadelcode/url-shortener/blob/main/site_images/user_dashboard.png){User dashboard}
+
 # Installation
 - To install this web application, you will need to have Python and Flask installed on your system.
 - Once you have Python and Flask installed, you can install this web application by using the following command:
