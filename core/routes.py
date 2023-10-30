@@ -367,9 +367,10 @@ def view_profile(user):
     return render_template('view_profile.html', user=user)
 
 # Edit profile route
-@app.route('/edit-profile', methods=['GET', 'POST'])
+@app.route('/<user>/edit-profile', methods=['GET', 'POST'])
 @login_required
-def edit_profile():
+def edit_profile(user):
+    user = current_user.username
     form = EditProfileForm()
     if request.method == 'POST':
         if form.validate_on_submit():
@@ -394,4 +395,4 @@ def edit_profile():
     form.first_name.data = current_user.first_name
     form.last_name.data = current_user.last_name
 
-    return render_template('edit_profile.html', form=form)
+    return render_template('edit_profile.html', form=form, user=user)
