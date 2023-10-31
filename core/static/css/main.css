@@ -153,6 +153,15 @@ justify-self: center;
 
 .custom-form p{
 color: #dc3545;
+font-weight: 500;
+}
+
+
+/* Alert message when an anonymous user is trying to access the dashboard */
+.alert-message {
+background-color: #dc3545;
+color: white;
+border: 1px solid black;
 }
 
 .message-div {
@@ -283,10 +292,49 @@ font-size: 22px;
 border-radius: 8px;
 }
 
+/* Edit profile page styles */
+.file-upload-img {
+position: relative;
+padding: 0;
+width: 25%;
+object-fit: contain;
+}
+
+
+.file-upload-img img {
+width: 100%;
+}
+
+.file-upload-img:hover {
+cursor: pointer;
+opacity: 0.8;
+transition: 0.3;
+}
+/* -- position the camera icon at the center of the image div -- */
+.file-upload-img i {
+padding: 0;
+font-size: 80px;
+font-weight: bold;
+color: rgb(139, 26, 245);
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+}
+/* Hide file label */
+label[for="profile_photo"] {
+display: none;
+}
+/* Hide the file input element */
+input[type="file"] {
+display:none;
+}
+
 /*Media Queries Styles*/
 @media (max-width: 768px) {
-.table {
-  overflow-x: scroll;
+table {
+  width: 100%;
+  overflow-x: auto;
 }
 /*For the Dashboard - Remove this div when the screen size
 has a maximum width of 768px */
