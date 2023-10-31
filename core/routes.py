@@ -1,8 +1,15 @@
+import os
 import json
+import js2py
+import secrets
+from PIL import Image
 from datetime import datetime
 from core.models import ShortUrls, CustomShortUrls, User
 from core.forms import LoginForm, RegistrationForm, EditProfileForm
-from core import app, db, login_manager
+# from core import app, db, login_manager
+from core.models import db
+from core.auth import login_manager
+from core.app import app
 from random import choice
 import string, hashlib
 import codecs
@@ -366,6 +373,28 @@ def view_profile(user):
     user = current_user.username
     return render_template('view_profile.html', user=user)
 
+# Function to save user profile picture
+def save_picture(form_picture):
+    random_hex = secrets.token_hex(8)
+    f_name, f_ext = os.path.splitext(form_picture.filename)
+
+    # picture filename
+    picture_fn = random_hex + f_ext
+
+    # picture path
+    picture_path = os.path.join(app.root_path, 'static/profile_pics', picture_fn)
+
+    # Resize the picture
+    output_size = (240, 240)
+    i = Image.open(form_picture)
+    # resize
+    i.thumbnail(output_size)
+
+    # save the picture
+    i.save(picture_path)
+
+    return picture_fn
+
 # Edit profile route
 @app.route('/<user>/edit-profile', methods=['GET', 'POST'])
 @login_required
@@ -374,6 +403,12 @@ def edit_profile(user):
     form = EditProfileForm()
     if request.method == 'POST':
         if form.validate_on_submit():
+            # if the form profile photo field exists
+            if form.profile_photo.data:
+                profile_pic = save_picture(form.profile_photo.data)
+                current_user.profile_pic=profile_pic # Add the profile picture to the user's profile picture data.
+            #else:
+            #    current_user.profile_pic='logo.png'
             email = form.email.data
             username = form.username.data
             first_name = form.first_name.data
@@ -390,6 +425,7 @@ def edit_profile(user):
             db.session.commit() # commit the updated user info to the database
             flash('Your profile has been updated.', 'success')
             return redirect(url_for('view_profile', user=current_user.username))
+    profile_pic = url_for('static', filename='profile_pics/' + current_user.profile_pic)
     form.email.data = current_user.email
     form.username.data = current_user.username
     form.first_name.data = current_user.first_name
