@@ -22,8 +22,8 @@
             Generated custom URLs
           </div>
           {% if custom_urls %}
-          <div class="card-body">
-            <table style="overflow: scroll;" class="table">
+          <div class="table-responsive">
+            <table class="table table table-bordered">
               <thead>
                 <tr>
                   <th scope="col">Custom URL</th>
@@ -32,84 +32,89 @@
                 </tr>
               </thead>
               {% for custom_url in custom_urls%}
-              <tr>
-                <td>
-                  <!--Generated short URL with a copy icon-->
-                  <div class="code-field input-group text-center">
-                    <input value="{{custom_url.short_url}}" type="text" class="form-control code-field-input" disabled>
-                    <b><i class="uil uil-copy copy-icon input-group-text text-center" data-bs-toggle="tooltip" title="copy url" data-text = "{{custom_url.short_url}}"></i></b>
-                  </div>
-                </td>
-                <td>{{custom_url.created_at.strftime("%Y-%m-%d")}}</td>
-                <td>
-                  <a onclick="openModal('view{{custom_url.short_id}}')" class="view-btn btn btn-primary btn-md">View</a>
-                  <!-- View Modal -->
-                  <div class="modal" id="view{{custom_url.short_id}}">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
+              <tbody>
+                <tr>
+                  <td>
+                    <!--Generated short URL with a copy icon-->
+                    <div class="code-field input-group text-center">
+                      <input value="{{custom_url.short_url}}" type="text" class="form-control code-field-input" disabled>
+                      <b><i class="uil uil-copy copy-icon input-group-text text-center" data-bs-toggle="tooltip" title="copy url" data-text = "{{custom_url.short_url}}"></i></b>
+                    </div>
+                  </td>
+                  <td>{{custom_url.created_at.strftime("%Y-%m-%d")}}</td>
+                  <td>
+                    <a onclick="openModal('view{{custom_url.short_id}}')" class="view-btn btn btn-primary btn-md">View</a>
+                    <!-- View Modal -->
+                    <div class="modal" id="view{{custom_url.short_id}}">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
 
-                        <!-- Modal Header -->
-                        <div class="modal-header">
-                          <h5 class="modal-title">{{custom_url.short_url}}</h5>
-                          <span class="close">&times;</span>
-                        </div>
-
-                        <!-- Modal body -->
-                        <div class="modal-body">
-                          <div>
-                            <b>Original URL:</b><br>
-                            <span>{{custom_url.original_url}}</span><br>
-
-                            <b>Domain:</b><br>
-                            <span>{{custom_url.domain}}</span><br>
-
-                            <b>Back Half:</b><br>
-                            <span>{{custom_url.back_half}}</span><br>
-
-                            <b>Date & time created:</b><br>
-                            <span>{{custom_url.created_at.strftime("%Y-%m-%d %H:%M:%S")}}</span><br>
+                          <!-- Modal Header -->
+                          <div class="modal-header">
+                            <h5 class="modal-title">Details</h5>
+                            <span class="close">&times;</span>
                           </div>
-                        </div>
 
-                        <!-- Modal footer -->
-                        <div class="modal-footer">
-                          <button onclick="closeModal()" type="button" class="btn btn-danger">Close</button>
-                        </div>
+                          <!-- Modal body -->
+                          <div class="modal-body">
+                            <div>
+                              <b>Original URL:</b><br>
+                              <span>{{custom_url.original_url}}</span><br>
 
+                              <b>Custom URL:</b><br>
+                              <span>{{custom_url.short_url}}</span><br>
+
+                              <b>Domain:</b><br>
+                              <span>{{custom_url.domain}}</span><br>
+
+                              <b>Back Half:</b><br>
+                              <span>{{custom_url.back_half}}</span><br>
+
+                              <b>Date & time created:</b><br>
+                              <span>{{custom_url.created_at.strftime("%Y-%m-%d %H:%M")}}</span><br>
+                            </div>
+                          </div>
+
+                          <!-- Modal footer -->
+                          <div class="modal-footer">
+                            <button onclick="closeModal()" type="button" class="btn btn-danger">Close</button>
+                          </div>
+
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <a onclick="openModal('delete{{custom_url.short_id}}')" class="btn btn-danger btn-md">Delete</a>
-                  <!-- Delete Modal -->
-                  <div class="modal" id="delete{{custom_url.short_id}}">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
+                    <a onclick="openModal('delete{{custom_url.short_id}}')" class="btn btn-danger btn-md">Delete</a>
+                    <!-- Delete Modal -->
+                    <div class="modal" id="delete{{custom_url.short_id}}">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
 
-                        <!-- Modal Header -->
-                        <div class="modal-header">
-                          <h5 class="modal-title">Delete Confirmation</h5>
-                          <span class="close">&times;</span>
-                        </div>
-
-                        <!-- Modal body -->
-                        <div class="modal-body">
-                          <div>
-                            <p>Are you sure you want to delete <i>{{custom_url.short_url}}</i>?</p>
+                          <!-- Modal Header -->
+                          <div class="modal-header">
+                            <h5 class="modal-title">Delete Confirmation</h5>
+                            <span class="close">&times;</span>
                           </div>
-                        </div>
 
-                        <!-- Modal footer -->
-                        <div class="modal-footer">
-                          <a href="{{url_for('delete', short_id=custom_url.short_id)}}" class="btn btn-danger">Delete</a>
-                          <button onclick="closeModal()" type="button" class="btn btn-primary">Cancel</button>
-                        </div>
+                          <!-- Modal body -->
+                          <div class="modal-body">
+                            <div>
+                              <p>Are you sure you want to delete <i>{{custom_url.short_url}}</i>?</p>
+                            </div>
+                          </div>
 
+                          <!-- Modal footer -->
+                          <div class="modal-footer">
+                            <a href="{{url_for('delete', short_id=custom_url.short_id)}}" class="btn btn-danger">Delete</a>
+                            <button onclick="closeModal()" type="button" class="btn btn-primary">Cancel</button>
+                          </div>
+
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <a href="{{url_for('visit_link', short_id=custom_url.short_id)}}" class="btn btn-basic btn-md">Visit Link</a>
-                </td>
-              </tr>
+                    <a href="{{url_for('visit_link', short_id=custom_url.short_id)}}" class="btn btn-basic btn-md">Visit Link</a>
+                  </td>
+                </tr>
+              </tbody>
               <!--End of row-->
               {% endfor %}
             </table>
@@ -144,12 +149,24 @@
 
 // Get the modal div
 var modals = document.getElementsByClassName("modal");
+
 // Get the button that will be clicked to display a modal
 var modalViewBtn = document.getElementsByClassName("view-btn");
+
 // The modal that will be displayed when the button is clicked
 var currentModal = null;
-// Get the webpage element
-var webpage = document.querySelector("body");
+
+// Backdrop for the modal
+const backdrop = document.createElement('div'); // create a div element
+// backdrop.classList.add("modal-backdrop"); // add a class to the backdrop div
+
+/*modals.addEventListener('show.bs.modal', function() {
+  document.body.appendChild(backdrop);
+});
+
+modals.addEventListener('hidden.bs.modal', function() {
+  document.body.removeChild(backdrop);
+});*/
 
 // Function to open modal by id
 function openModal(id) {
@@ -158,6 +175,8 @@ function openModal(id) {
     if (modals[i].getAttribute('id') == id) {
       currentModal = modals[i]; // Assigning the variable currentModal to a particular ith modal
       currentModal.style.display = "block"; // Change the display of the ith modal
+      backdrop.classList.add("modal-backdrop");
+      document.body.appendChild(backdrop);
       break;
     }
   }
@@ -166,19 +185,29 @@ function openModal(id) {
 // When the user clicks the button, open modal with the same id
 modalViewBtn.onclick = function() {
   let currentID = modalOpenBtn.getAttribute('id');
-  webpage.style.opacity = 0.5; // Set the opacity of the webpage to 50%
   openModal(currentID);
+  /*// Fade in the backdrop when the modal is opened
+  backdrop.addEventListener('shown.bs.modal', function() {
+    backdrop.style.opacity = 0.5;
+  });
+
+  // Fade out the backdrop when the modal is closed
+  backdrop.addEventListener('hidden.bs.modal', function() {
+    backdrop.style.opacity = 0;
+  });*/
 }
 
 // Function to close the modal by id
 function closeModal() {
   currentModal.style.display = "none";
+  document.body.removeChild(backdrop);
 }
 
 // When the user clicks anywhere outside of the modal or the x, close
 window.onclick = function(event) {
   if (event.target == currentModal || event.target.getAttribute('class') == 'close') {
     currentModal.style.display = "none";
+    document.body.removeChild(backdrop);
   }
 }
 </script>
