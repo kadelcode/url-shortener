@@ -15,7 +15,7 @@
         {% endif %}
     {% endfor %}
     <div>
-        <img src="{{ url_for('static', filename= '/img/logo.png') }}" alt="Avatar Logo" style="width:50%;" class="rounded-pill">
+        <img src="{{ url_for('static', filename='profile_pics/' + current_user.profile_pic) }}" alt="Avatar Logo" style="width:50%;" class="rounded-pill">
     </div>
     <div>
         <b>Email:</b>
