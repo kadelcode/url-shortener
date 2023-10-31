@@ -52,7 +52,7 @@
         <ul class="navbar-nav ms-auto">
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="true">
-              <img src="{{ url_for('static', filename= '/img/logo.png') }}" alt="Avatar Logo" style="width:40px;" class="rounded-pill">
+              <img src="{{ url_for('static', filename='profile_pics/' + current_user.profile_pic) }}" alt="Avatar Logo" style="width:40px;" class="rounded-pill">
             </a>
             
             <!--Links for dropdown of user profile link-->
@@ -72,7 +72,7 @@
     <div class="row">
       <div class="col-md-3 left-aligned-div">
         <div class="text-center">
-          <img src="{{ url_for('static', filename= '/img/logo.png') }}" alt="Avatar Logo" style="width:90%;" class="rounded-pill">
+          <img src="{{ url_for('static', filename='profile_pics/' + current_user.profile_pic) }}" alt="Avatar Logo" style="width:90%;" class="rounded-pill">
           <h3>{{current_user.username}}</h3><br>
           <a class="mt-3 edit-profile-button" href="{{url_for('edit_profile', user=current_user.username)}}">Edit Profile</a>
         </div><br>
