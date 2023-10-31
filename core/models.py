@@ -1,3 +1,5 @@
+import os
+from core.app import app
 from core.db import db
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -12,6 +14,7 @@ def load_user(user_id):
 # User Model
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    profile_pic = db.Column(db.String(64), default='logo.png')
     username = db.Column(db.String(64), unique=True)
     email = db.Column(db.String(120), unique=True)
     first_name = db.Column(db.String(64))
