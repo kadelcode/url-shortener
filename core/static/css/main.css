@@ -377,7 +377,13 @@ has a maximum width of 768px */
   display: block;
 }
 
-/* Edit profile image 
+.avatar-div img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+/* Edit profile image
 .file-upload-img {
   width: 50%;
 }*/
