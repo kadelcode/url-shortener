@@ -53,7 +53,7 @@
         <ul class="navbar-nav ms-auto">
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="true">
-              <img src="{{ url_for('static', filename='profile_pics/' + current_user.profile_pic) }}" alt="Avatar Logo" style="width:40px;" class="rounded-pill">
+              <img src="{{ url_for('static', filename='profile_pics/' + current_user.profile_pic) }}" alt="Avatar Logo" class="nav-icon-img rounded-pill">
             </a>
             
             <!--Links for dropdown of user profile link-->
@@ -92,7 +92,7 @@
                     {{ form.hidden_tag() }}
                     {{ wtf.form_errors(form, hiddens="only") }}
                     <div class="file-upload-img rounded-pill">
-                      <img id="profile_pic" src="{{ url_for('static', filename='profile_pics/' + current_user.profile_pic) }}" alt="Avatar Logo" class="rounded-pill">
+                      <img class="img-file" id="profile_pic" src="{{ url_for('static', filename='profile_pics/' + current_user.profile_pic) }}" alt="Avatar Logo" class="rounded-pill">
                       <i class="uil uil-camera-plus"></i>
                     </div>
                     {{wtf.quick_form(form)}}
@@ -114,7 +114,7 @@
       document.querySelector('.file-upload-img').addEventListener('click', function() {
         document.querySelector('#profile_photo').click();
         // Get the file input element.
-      const fileInput = document.getElementById("profile_photo");
+        const fileInput = document.getElementById("profile_photo");
 
       // Add a change event listener to the file input element.
       fileInput.addEventListener("change", function(event) {
@@ -128,7 +128,7 @@
         fileReader.addEventListener("load", function(event) {
           // Get the image data from the FileReader object.
           const imageData = event.target.result;
-
+    
           // Set the src attribute of the image preview element to the image data.
           document.getElementById("profile_pic").src = imageData;
         });
@@ -137,5 +137,17 @@
         fileReader.readAsDataURL(file);
       });
       });
+
+      /* Function to resize the profile picture to the width of the container */
+      function resizeUserProfilePicture() {
+        // Get the user profile picture element.
+        const userProfilePicture = document.querySelector('.image-file');
+
+        // Get the width of the container.
+        const containerWidth = userProfilePicture.parentElement.clientWidth;
+
+        // Resize the user profile picture to fit the container width.
+        userProfilePicture.style.width = containerWidth + 'px';
+      }
     </script>
 </body>
