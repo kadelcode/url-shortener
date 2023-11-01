@@ -309,6 +309,14 @@ height: 200px;
 margin-top: 20px;
 }
 
+/* Icon image for the view profile page */
+.view-icon-img {
+width: 200px;
+height: 200px;
+border-radius: 50%;
+margin-bottom: 20px;
+}
+
 /* Edit profile page styles */
 .file-upload-img {
 position: relative;
