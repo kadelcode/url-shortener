@@ -15,7 +15,9 @@
         {% endif %}
     {% endfor %}
     <div>
-        <img src="{{ url_for('static', filename='profile_pics/' + current_user.profile_pic) }}" alt="Avatar Logo" class="view-icon-img rounded-pill">
+        <a href="{{ url_for('static', filename='profile_pics/' + current_user.profile_pic) }}" style="cursor: pointer;">
+            <img src="{{ url_for('static', filename='profile_pics/' + current_user.profile_pic) }}" alt="Avatar Logo" class="view-icon-img rounded-pill">
+        </a>
     </div>
     <div>
         <b>Email:</b>
