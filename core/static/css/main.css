@@ -292,17 +292,39 @@ font-size: 22px;
 border-radius: 8px;
 }
 
+/* Style for the Dashboard profile icon */
+.nav-icon-img {
+border-radius: 50%;
+width: 40px;
+height: 40px;
+}
+
+/* Style of the image for the left aligned div for screen
+size > 768px */
+.left-icon-img {
+border: 4px solid rgb(139, 26, 245);
+border-radius: 50%;
+width: 200px;
+height: 200px;
+margin-top: 20px;
+}
+
 /* Edit profile page styles */
 .file-upload-img {
 position: relative;
 padding: 0;
-width: 25%;
-object-fit: contain;
+width: 200px;
+height: 200px;
+object-fit: cover;
+border: 2px solid rebeccapurple;
 }
 
 
 .file-upload-img img {
 width: 100%;
+object-fit: cover;
+border-radius: 50%;
+height: 200px;
 }
 
 .file-upload-img:hover {
@@ -345,5 +367,14 @@ has a maximum width of 768px */
 /*Display avatar div */
 .avatar-div {
   display: block;
+}
+
+/* Edit profile image 
+.file-upload-img {
+  width: 50%;
+}*/
+/*Camera icon size */
+.file-upload-img i {
+  font-size: 70px;
 }
 }
