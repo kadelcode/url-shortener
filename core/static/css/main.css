@@ -297,6 +297,7 @@ border-radius: 8px;
 border-radius: 50%;
 width: 40px;
 height: 40px;
+object-fit: cover;
 }
 
 /* Style of the image for the left aligned div for screen
@@ -381,6 +382,7 @@ has a maximum width of 768px */
     width: 100px;
     height: 100px;
     border-radius: 50%;
+    object-fit: cover;
 }
 
 /* Edit profile image
