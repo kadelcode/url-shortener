@@ -37,7 +37,7 @@
                   <td>
                     <!--Generated short URL with a copy icon-->
                     <div class="code-field input-group text-center">
-                      <input value="{{custom_url.short_url}}" type="text" class="form-control code-field-input" disabled>
+                      <input id="short-link" value="{{custom_url.short_url}}" type="text" class="form-control code-field-input" disabled>
                       <b><i class="uil uil-copy copy-icon input-group-text text-center" data-bs-toggle="tooltip" title="copy url" data-text = "{{custom_url.short_url}}"></i></b>
                     </div>
                   </td>
@@ -123,6 +123,8 @@
           <p class="text-center">No available custom url. You can create one <a href="{{url_for('user_dashboard', user=current_user.username)}}">here</a></p>
           {% endif %}
 </div>
+{% endblock %}
+
 <!--
   Internal
   JavaScript
@@ -211,4 +213,3 @@ window.onclick = function(event) {
   }
 }
 </script>
-{% endblock %}
