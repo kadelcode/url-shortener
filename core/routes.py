@@ -385,7 +385,7 @@ def save_picture(form_picture):
     picture_path = os.path.join(app.root_path, 'static/profile_pics', picture_fn)
 
     # Resize the picture
-    output_size = (240, 240)
+    output_size = (200, 200)
     i = Image.open(form_picture)
     # resize
     i.thumbnail(output_size)
