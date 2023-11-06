@@ -4,8 +4,9 @@ import js2py
 import secrets
 from PIL import Image
 from datetime import datetime
+from core import mail
 from core.models import ShortUrls, CustomShortUrls, User
-from core.forms import LoginForm, RegistrationForm, EditProfileForm
+from core.forms import LoginForm, RegistrationForm, EditProfileForm, RequestResetForm, ResetPasswordForm
 # from core import app, db, login_manager
 from core.models import db
 from core.auth import login_manager
@@ -13,9 +14,10 @@ from core.app import app
 from random import choice
 import string, hashlib
 import codecs
-from flask import render_template, request, flash, redirect, url_for, g
+from flask import render_template, request, flash, redirect, url_for, g, abort
 from flask_login import login_user, login_required, logout_user, current_user
-from bleach import clean
+from flask_mail import Message
+from werkzeug.security import generate_password_hash
 
 # Choice algorithm
 def generate_short_id(num_of_chars: int):
@@ -277,8 +279,12 @@ def user_dashboard(user):
             flash('Short custom link successfully generated', 'success')
             return render_template("overview.html", short_url=short_url)
         '''
-    
     # for GET request
+    '''
+    if not(current_name):
+        abort(404)
+    '''
+
     return render_template('overview.html')
 
 # Redirect the custom short url with only short_id
@@ -432,3 +438,59 @@ def edit_profile(user):
     form.last_name.data = current_user.last_name
 
     return render_template('edit_profile.html', form=form, user=user)
+
+# send reset email function
+def send_reset_email(user):
+    if user is not None:
+        # Get the user token
+        token = user.get_reset_token()
+        msg = Message('Password Reset Request', 
+                sender='bitsy@gmail.com', recipients=[user.email])
+
+        # body of the message
+        msg.body = render_template('email/reset_password.html', token=token)
+        mail.send(msg)
+    else:
+        pass
+
+@app.route('/reset_password', methods=['GET', 'POST'])
+def reset_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = RequestResetForm()
+
+    # validate the form on a post request
+    if form.validate_on_submit():
+        # filter user by the email that comes first in the database
+        user = User.query.filter_by(email=form.email.data).first()
+        send_reset_email(user) # send the user an email
+        flash('An email has been sent with instructions to reset your password', 'info')
+        return redirect(url_for('login'))
+    return render_template('reset_request.html', title='Reset Password', form=form)
+
+
+# change password route
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_token(token):
+    if current_user.is_authenticated:
+        logout_user()
+        return redirect(url_for('reset_request'))
+
+    # verify user token
+    user = User.verify_reset_token(token)
+
+    if user is None:
+        flash('Token invalid or expired!', 'warning')
+        return redirect(url_for('reset_request'))
+
+    form = ResetPasswordForm()
+
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            password = form.password.data
+            user.password = password
+            db.session.commit()
+            flash('Your password has been updated! You can now login.')
+            return redirect(url_for('login'))
+
+    return render_template('reset_token.html', form=form)
