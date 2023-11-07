@@ -54,3 +54,26 @@ class EditProfileForm(FlaskForm):
         if field.data != current_user.username:
             if User.query.filter_by(username=field.data).first():
                 raise ValidationError('Username already in use.')
+
+
+# Request password reset form
+class RequestResetForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Length(1, 64), Email()])
+    submit = SubmitField('Request Password Reset')
+
+    # validate email
+    '''
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user is None:
+            raise ValidationError('There is no account with that email!')
+    '''
+
+# Reset password form
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired(), 
+        EqualTo('password1', message='Passwords must match.'),
+        Length(min=8, message='Password must be at least 8 characters long.'),
+        ])
+    password1 = PasswordField('Confirm password', validators=[DataRequired()])
+    submit = SubmitField('Reset Password')
