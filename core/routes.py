@@ -279,9 +279,9 @@ def user_dashboard(user):
             flash('Short custom link successfully generated', 'success')
             return render_template("overview.html", short_url=short_url)
         '''
-    # for GET request
     '''
-    if not(current_name):
+    # for GET request
+    if not(user_id):
         abort(404)
     '''
 
@@ -442,13 +442,35 @@ def edit_profile(user):
 # send reset email function
 def send_reset_email(user):
     if user is not None:
+        # user username
+        #username = User.query.filter_by("id").username
+
         # Get the user token
         token = user.get_reset_token()
+
+        user_username = user.get_username()
+
+        # link token
+        link_token = url_for('reset_token', token=token, _external=True)
         msg = Message('Password Reset Request', 
                 sender='bitsy@gmail.com', recipients=[user.email])
 
         # body of the message
-        msg.body = render_template('email/reset_password.html', token=token)
+        msg.body = '''
+        Hi {},
+
+        You requested a password reset for your Bitsy account. To reset your password, click the link below:
+        {}
+
+        This link will expire in 30 minutes. If you do not reset your password within this time, you will need to request a new password reset link.
+
+        If you did not request a password reset, please ignore this email. Your password remains unchanged.
+
+        If you have any questions or concerns, please contact our support team at teambitsy@gmail.com.
+
+        Thanks,
+        The Bitsy Team
+        '''.format(user_username, link_token)
         mail.send(msg)
     else:
         pass
